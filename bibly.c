@@ -24,8 +24,8 @@ char *rmnl(char *s) {
 int main(int argc,char **argv) {
 
   if(argc!=2 && argc!=3 && argc!=4) {
-    printf("syntax: %s search text\n",argv[0]);
-    printf("syntax: %s book chapter [verse]\n",argv[0]);
+    printf("syntax: %s search <text>\n",argv[0]);
+    printf("syntax: %s <book> <chapter> [verse]\n",argv[0]);
     return -1;
   }
 
