@@ -23,9 +23,9 @@ char *rmnl(char *s) {
 
 int main(int argc,char **argv) {
 
-  if(argc!=2 && argc!=3 && argc!=4) {
+  if(argc<3 || argc>5) {
     printf("syntax: %s search <text>\n",argv[0]);
-    printf("syntax: %s <book> <chapter> [verse]\n",argv[0]);
+    printf("syntax: %s <book> <chapter> [start verse] [end verse]\n",argv[0]);
     return -1;
   }
 
@@ -72,10 +72,13 @@ int main(int argc,char **argv) {
   } else {
 
     char *book=argv[1];
-    int chap=atoi(argv[2]);
-    int vers=0;
+    unsigned int chap=0;
+    unsigned int svers=0;
+    unsigned int evers=0;
 
-    if(argc==4) vers=atoi(argv[3]);
+    if(argc>=3) chap=atoi(argv[2]);
+    if(argc>=4) svers=atoi(argv[3]);
+    if(argc==5) evers=atoi(argv[4]);
 
     char *line=NULL;
     size_t llen=0;
@@ -93,7 +96,7 @@ int main(int argc,char **argv) {
       int vnumber=atoi(tokens[2]);
       char *text=tokens[3];
 
-      if(strcasecmp(book,bname)==0 && ((chap==cnumber && vers!=0 && vers==vnumber) || (chap==cnumber && vers==0))) { 
+      if(strcasecmp(book,bname)==0 && cnumber==chap && ((argc==5 && svers!=0 && evers!=0 && (vnumber>=svers && vnumber<=evers)) || (argc==4 && vnumber==svers) || argc==3)) { 
         printf("%s %d:%d -> %s\n\n",bname,cnumber,vnumber,text);
       }
 
